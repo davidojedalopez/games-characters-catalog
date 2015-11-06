@@ -13,7 +13,7 @@ session = DBSession()
 
 @app.route("/")
 def main():
-	return "Hello World"
+	return render_template("main.html")
 
 if __name__ == "__main__":
 	app.debug = True
