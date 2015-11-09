@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% block content %}
+	<div class="container">
+		<h2>{{game.name}}</h2>
+	</div>
+
+	{% if characters != [] %}
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-6">
+					<h2>Characters</h2>
+					{% for character in characters %}
+						<div>
+							<h3>{{character.name}}</h3>
+							<p>{{character.bio}}</p>
+							<img src="{{character.photo_url}}">
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

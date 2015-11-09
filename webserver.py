@@ -18,10 +18,11 @@ def showGames():
 	return render_template("games.html", games=games)
 
 @app.route("/games/<int:game_id>/")
+@app.route("/games/<int:game_id>/characters")
 def showCharacters(game_id):
 	game = session.query(Game).filter_by(id=game_id).one
-	characters = session.query(Character).filter_by()
-
+	characters = session.query(Character).filter_by(game_id=game_id).all()
+	return render_template("characters.html", characters=characters, game=game)
 
 if __name__ == "__main__":
 	app.debug = True
