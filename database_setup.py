@@ -28,6 +28,8 @@ class Character(Base):
 	name = Column(String(30), nullable=False)
 	bio = Column(String(250))
 	photo_url = Column(String(250), nullable=False)
+	game_id = Column(Integer, ForeignKey("game.id"))
+	game = relationship(Game)
 
 	@property
 	def serialize(self):

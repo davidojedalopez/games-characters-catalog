@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block content %}
+	<h1>Games</h1>
+	{% for game in games %}
+		<div class="row">
+			<div class="col-xs-6">
+				<h3>{{game.name}}</h3>
+				<img class="img img-responsive" src="{{game.logo_url}}" height="100" width="100">
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}

@@ -12,8 +12,16 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 @app.route("/")
-def main():
-	return render_template("main.html")
+@app.route("/games/")
+def showGames():
+	games = session.query(Game)
+	return render_template("games.html", games=games)
+
+@app.route("/games/<int:game_id>/")
+def showCharacters(game_id):
+	game = session.query(Game).filter_by(id=game_id).one
+	characters = session.query(Character).filter_by()
+
 
 if __name__ == "__main__":
 	app.debug = True

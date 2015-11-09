@@ -23,7 +23,7 @@ game1 = Game(name="Heroes of the Storm", logo_url="https://yt3.ggpht.com/-pKiXsu
 session.add(game1)
 session.commit()
 
-character1 = Character(name="Raynor", bio="Ranged Assassin", photo_url="http://www.heroesfire.com/images/skin/raynor-renegade-commander.png")
+character1 = Character(name="Raynor", bio="Ranged Assassin", photo_url="http://www.heroesfire.com/images/skin/raynor-renegade-commander.png", game=game1)
 
 session.add(character1)
 session.commit()
@@ -34,7 +34,7 @@ game2 = Game(name="Starcraft", logo_url="http://us.battle.net/sc2/static/images/
 session.add(game2)
 session.commit()
 
-character2 = Character(name="Artanis", bio="Protoss hero", photo_url="http://vignette2.wikia.nocookie.net/starcraft/images/c/c9/Artanis_LotV_Art1.jpg/revision/latest?cb=20141108233355")
+character2 = Character(name="Artanis", bio="Protoss hero", photo_url="http://vignette2.wikia.nocookie.net/starcraft/images/c/c9/Artanis_LotV_Art1.jpg/revision/latest?cb=20141108233355", game=game2)
 
 session.add(character2)
 session.commit()
