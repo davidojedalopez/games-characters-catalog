@@ -9,6 +9,7 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
+		<link rel="stylesheet" href="static/main.css"
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -47,11 +48,18 @@
 		    </div>
 		</nav>
 
+		<section class="sidebar">
+			<nav>
+				<h1>Here goes the side bar.</h1>
+			</nav>	
+		</section>
+
 		<!-- This is where other html will be inserted -->
-		<div class="container">
+		<section class="container main">
+			<h2>This is the main content.</h2>
 			{% block content %}
 			{% endblock %}
-		</div>
+		</section>	
 
 		<!-- jQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

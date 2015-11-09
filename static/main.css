@@ -1,0 +1,14 @@
+.sidebar {
+	float: left;
+	width: 15%;
+	border: 5px solid #000;
+	background-color: yellow;
+	height: 100%;
+}
+.main {
+	border: 5px solid #000;
+	width: 85%;
+	background-color: blue;
+	float:left;
+	height: 100%;
+}
