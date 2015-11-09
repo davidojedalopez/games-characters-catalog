@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Game, Character, User
+from database_setup import Base, Game, Character, User
 
 engine = create_engine("sqlite:///game_characters_menu.db")
 # Bind the engine to the metadata of the Base class so that the
