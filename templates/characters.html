@@ -5,27 +5,27 @@
 			<h2>{{game.name}}</h2>
 		{% endif %}
 	</div>
-	<div class="section">
-		<a href="{{url_for('newCharacter')}}">
-			<button class="btn btn-default" id="new-character">
-				<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Character
-			</button>
-		</a>	
-	</div>
-	<div class="container">
-		<div class="row">
+	<section class="container">		
 			{% if characters != [] %}					
 				<h2>Characters</h2>
-				{% for character in characters %}
-				<div class="col-xs-4">
-					<div>
-						<h3>{{character.name}}</h3>
-						<p>{{character.bio}}</p>
-						<img class="img img-responsive center-block" src="{{character.photo_url}}">
-					</div>
-				</div>			
-				{% endfor %}
-			{% endif %}
-		</div>
-	</div>
+				<div class="container">
+					<a href="{{url_for('newCharacter')}}">
+						<button class="btn btn-default" id="new-character">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Character
+						</button>
+					</a>	
+				</div>
+				<div class="row text-center">
+					{% for character in characters %}
+					<div class="col-xs-4">
+						<div>
+							<h3>{{character.name}}</h3>
+							<p>{{character.bio}}</p>
+							<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
+						</div>
+					</div>			
+					{% endfor %}
+				</div><!-- row -->	
+			{% endif %}		
+	</section>
 {% endblock %}
