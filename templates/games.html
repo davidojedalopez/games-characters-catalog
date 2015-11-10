@@ -4,7 +4,7 @@
 	<div class="section">
 		<a href="{{url_for('newGame')}}">
 			<button class="btn btn-default" id="new-restaurant">
-				<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Game
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Game
 			</button>
 		</a>	
 	</div>
@@ -15,7 +15,9 @@
 				<div class="col-xs-3">
 					<h3>{{game.name}}</h3>
 					<img class="img img-responsive center-block" src="{{game.logo_url}}" height="100" width="100">
-				</div>		
+					<a href="{{game.name}}/edit" class="btn btn-default">Edit</a>
+				</div>
+
 			{% endfor %}	
 		</div>
 	</div>

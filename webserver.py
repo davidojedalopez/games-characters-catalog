@@ -13,6 +13,9 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 @app.route("/")
+def redirectToGames():
+	return redirect("/games/")
+
 @app.route("/games/")
 def showGames():
 	games = session.query(Game)
@@ -53,6 +56,18 @@ def newCharacter():
 	else:
 		return render_template("newCharacter.html")
 
+@app.route("/games/<game_name>/edit/", methods=["GET", "POST"])
+def editGame(game_name):
+	editedGame = session.query(Game).filter_by(name=game_name).one()
+	if request.method == "POST":
+		if request.form["name"] and request.form["logo_url"]:
+			editedGame.name = request.form["name"]
+        	flash("Game Successfully Edited %s" % editedGame.name)
+        	editedGame.logo_url = request.form["logo_url"]
+        	flash("Game Successfully Edited %s" % editedGame.logo_url)
+        	return redirect(url_for("showGames"))
+	else:
+		return render_template("editGame.html", game=editedGame)
 
 if __name__ == "__main__":
 	app.secret_key = "super_secret_key"
