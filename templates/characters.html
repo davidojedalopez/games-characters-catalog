@@ -1,7 +1,9 @@
 {% extends "main.html" %}
 {% block content %}
 	<div class="container">
-		<h2>{{game.name}}</h2>
+		{% if game %}
+			<h2>{{game.name}}</h2>
+		{% endif %}
 	</div>
 	<div class="container">
 		<div class="row">
@@ -12,7 +14,7 @@
 					<div>
 						<h3>{{character.name}}</h3>
 						<p>{{character.bio}}</p>
-						<img src="{{character.photo_url}}">
+						<img class="img img-responsive center-block" src="{{character.photo_url}}">
 					</div>
 				</div>			
 				{% endfor %}
