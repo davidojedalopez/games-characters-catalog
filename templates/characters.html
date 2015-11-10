@@ -5,6 +5,13 @@
 			<h2>{{game.name}}</h2>
 		{% endif %}
 	</div>
+	<div class="section">
+		<a href="{{url_for('newCharacter')}}">
+			<button class="btn btn-default" id="new-character">
+				<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Character
+			</button>
+		</a>	
+	</div>
 	<div class="container">
 		<div class="row">
 			{% if characters != [] %}					
