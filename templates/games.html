@@ -12,12 +12,13 @@
 	<div class="container text-center">
 		<div class="row">
 			{% for game in games %}
-				<div class="col-xs-3">
-					<h3>{{game.name}}</h3>
-					<img class="img img-responsive center-block" src="{{game.logo_url}}" height="100" width="100">
-					<a href="{{game.name}}/edit" class="btn btn-default">Edit</a>
-				</div>
-
+				<a href="{{game.name}}">
+					<div class="col-xs-3">
+						<h3>{{game.name}}</h3>
+						<img class="img img-responsive center-block" src="{{game.logo_url}}" height="100" width="100">
+						<a href="{{game.name}}/edit" class="btn btn-default">Edit</a>
+					</div>
+				</a>
 			{% endfor %}	
 		</div>
 	</div>

@@ -27,6 +27,9 @@ def showAllCharacters():
 	return render_template("characters.html", characters=characters)
 
 @app.route("/games/<game_name>/")
+def redirectToCharacters(game_name):
+	return redirect("games/%s/characters" % game_name)
+
 @app.route("/games/<game_name>/characters")
 def showCharacters(game_name):
 	game = session.query(Game).filter_by(name=game_name).one()
@@ -68,6 +71,24 @@ def editGame(game_name):
         	return redirect(url_for("showGames"))
 	else:
 		return render_template("editGame.html", game=editedGame)
+
+#@app.route("/characters/<character_name>/edit", methods=["GET", "POST"])
+@app.route("/games/<game_name>/characters/<character_name>/edit", methods=["GET", "POST"])
+def editCharacter(character_name, game_name):
+	editedCharacter = session.query(Character).filter_by(name=character_name).one()
+	game = session.query(Game).filter_by(name=editedCharacter.game.name).one()
+	if request.method == "POST":
+		if request.form["name"] and request.form["photo_url"] and request.form["game"]:
+			editedCharacter.name = request.form["name"]
+			flash("Character Successfully Edited %s" % editedCharacter.name)
+			editedCharacter.photo_url = request.form["photo_url"]
+			flash("Character Successfully Edited %s" % editedCharacter.photo_url)			
+			editedCharacter.game = game
+			flash("Character Successfully Edited %s" % editedCharacter.game)
+			return redirect(url_for("showCharacters", game_name=game.name))
+	else:
+		return render_template("editCharacter.html", character=editedCharacter, game=game)
+
 
 if __name__ == "__main__":
 	app.secret_key = "super_secret_key"
