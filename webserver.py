@@ -75,19 +75,20 @@ def editGame(game_name):
 #@app.route("/characters/<character_name>/edit", methods=["GET", "POST"])
 @app.route("/games/<game_name>/characters/<character_name>/edit", methods=["GET", "POST"])
 def editCharacter(character_name, game_name):
-	editedCharacter = session.query(Character).filter_by(name=character_name).one()
-	game = session.query(Game).filter_by(name=editedCharacter.game.name).one()
+	editedCharacter = session.query(Character).filter_by(name=character_name).one()	
+	games = session.query(Game).all()	
 	if request.method == "POST":
-		if request.form["name"] and request.form["photo_url"] and request.form["game"]:
-			editedCharacter.name = request.form["name"]
+		game = session.query(Game).filter_by(name=request.form["game"]).one()
+		if request.form["name"] and request.form["photo_url"] and game:						
+			editedCharacter.name = request.form["name"]			
 			flash("Character Successfully Edited %s" % editedCharacter.name)
 			editedCharacter.photo_url = request.form["photo_url"]
 			flash("Character Successfully Edited %s" % editedCharacter.photo_url)			
-			editedCharacter.game = game
-			flash("Character Successfully Edited %s" % editedCharacter.game)
+			editedCharacter.game = game			
+			flash("Character Successfully Edited %s" % editedCharacter.game)			
 			return redirect(url_for("showCharacters", game_name=game.name))
 	else:
-		return render_template("editCharacter.html", character=editedCharacter, game=game)
+		return render_template("editCharacter.html", character=editedCharacter, games=games)
 
 
 if __name__ == "__main__":

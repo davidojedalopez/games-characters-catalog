@@ -10,25 +10,29 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6 col-md-offset-1 padding-top">
-			<form action="{{url_for('editCharacter', character_name = character.name, game_name = game.name)}}" method = "post">
+			<form action="{{url_for('editCharacter', character_name = character.name, game_name = character.game.name)}}" method = "post">
 				<div class="form-group">
 					<label for="name">Name:</label>
 					<input type ="text" class="form-control" name="name" value="{{character.name}}">
 					<label for="photo_url">Photo URL:</label>
 					<input type ="text" class="form-control" name="photo_url" value="{{character.photo_url}}">
-					<label for="game">Game:</label>
-					<input type ="text" class="form-control" name="game" value="{{game.name}}">
+					<select name="game" class="form-control">
+						{% if games != [] %}
+							{% for game in games %}
+								<option>{{game.name}}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
 					<div class="padding-bottom"></div>
 					<button type="submit" class="btn btn-default" id="submit" type="submit">
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save
 					</button>
-					<a href = '{{url_for('showCharacters', game_name=game.name)}}'>
-						<button class="btn btn-default delete">
+					<a href = '{{url_for('showCharacters', game_name=character.game.name)}}' class="btn btn-default">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
-					</button>
-					</a>
+					</a>					
 				</div>
 			</form>
+
 		</div>
 	</div><!-- row -->
 {% endblock %}
