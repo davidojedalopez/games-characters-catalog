@@ -72,6 +72,17 @@ def editGame(game_name):
 	else:
 		return render_template("editGame.html", game=editedGame)
 
+@app.route("/games/<game_name>/delete/", methods=["GET", "POST"])
+def deleteGame(game_name):
+	gameToDelete = session.query(Game).filter_by(name=game_name).one()
+	if request.method == "POST":
+		session.delete(gameToDelete)
+		flash('%s Successfully Deleted' % gameToDelete.name)
+		session.commit()
+		return redirect(url_for("showGames"))
+	else:
+		return render_template("deleteGame.html", game=gameToDelete)
+
 #@app.route("/characters/<character_name>/edit", methods=["GET", "POST"])
 @app.route("/games/<game_name>/characters/<character_name>/edit", methods=["GET", "POST"])
 def editCharacter(character_name, game_name):
@@ -90,7 +101,8 @@ def editCharacter(character_name, game_name):
 	else:
 		return render_template("editCharacter.html", character=editedCharacter, games=games)
 
-
+#@app.route("games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
+#def deleteCharacter():
 if __name__ == "__main__":
 	app.secret_key = "super_secret_key"
 	app.debug = True

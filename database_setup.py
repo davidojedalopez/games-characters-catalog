@@ -29,7 +29,7 @@ class Character(Base):
 	bio = Column(String(250))
 	photo_url = Column(String(250), nullable=False)
 	game_id = Column(Integer, ForeignKey("game.id"))
-	game = relationship(Game)
+	game = relationship(Game, cascade="all")
 
 	@property
 	def serialize(self):
