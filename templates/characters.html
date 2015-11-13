@@ -1,33 +1,53 @@
 {% extends "main.html" %}
 {% block content %}
-	<div class="container text-center">
+
+	<section class="container text-center">
 		{% if game %}
-			<h1>{{game.name}}</h1>
+			<h1>
+				{{game.name}}
+			</h1>
 		{% endif %}
-	</div>
-	<section class="container">		
-			{% if characters != [] %}					
-				<h2>Characters</h2>
-				<div class="container">
-					<a href="{{url_for('newCharacter')}}">
-						<button class="btn btn-primary btn-lg">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Add Character
-						</button>
-					</a>	
-				</div>
-				<div class="row text-center">
-					{% for character in characters %}
-						<div class="col-xs-1 col-md-3">
-							<div>
-								<h2>{{character.name}}</h2>
-								<p>{{character.bio}}</p>
-								<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
-								<a href="characters/{{character.name}}/edit" class="btn btn-warning">Edit</a>
-								<a href="characters/{{character.name}}/delete" class="btn btn-danger">Delete</a>
-							</div>
-						</div>			
-					{% endfor %}
-				</div><!-- row -->	
-			{% endif %}		
 	</section>
+
+	<section class="container">
+		{% if characters != [] %}					
+			<h2>
+				Characters
+			</h2>
+
+			<div class="container">
+				<a href="{{url_for('newCharacter')}}">
+					<button class="btn btn-primary btn-lg">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Add Character
+					</button>
+				</a>	
+			</div><!-- container -->
+
+			<div class="row text-center">
+				{% for character in characters %}
+					<div class="col-xs-1 col-md-3">	
+						<h2>
+							{{character.name}}
+						</h2>
+
+						<p>
+							{{character.bio}}
+						</p>
+
+						<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
+
+						<a href="characters/{{character.name}}/edit" class="btn btn-warning">
+							Edit
+						</a>
+
+						<a href="characters/{{character.name}}/delete" class="btn btn-danger">
+							Delete
+						</a>	
+					</div><!-- col-xs-1 col-md-3 -->			
+				{% endfor %}
+			</div><!-- row -->	
+
+		{% endif %}
+	</section>
+
 {% endblock %}
