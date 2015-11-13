@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character
@@ -21,6 +21,11 @@ def showGames():
 	games = session.query(Game)
 	return render_template("games.html", games=games)
 
+@app.route("/games/JSON")
+def gamesJSON():
+	games = session.query(Game).all()
+	return jsonify(games=[r.serialize for r in games])
+
 @app.route("/characters/")
 def showAllCharacters():
 	characters = session.query(Character).all()
@@ -35,6 +40,17 @@ def showCharacters(game_name):
 	game = session.query(Game).filter_by(name=game_name).one()
 	characters = session.query(Character).filter_by(game_id=game.id).all()
 	return render_template("characters.html", characters=characters, game=game)
+
+@app.route("/games/characters/JSON")
+def charactersJSON():
+	characters = session.query(Character).all()
+	return jsonify(characters=[r.serialize for r in characters])
+
+@app.route("/games/<game_name>/characters/JSON")
+def gameCharactersJSON(game_name):
+	game = session.query(Game).filter_by(name=game_name).one()
+	characters = session.query(Character).filter_by(game=game).all()
+	return jsonify(characters=[r.serialize for r in characters])
 
 @app.route("/games/new/", methods=["GET", "POST"])
 def newGame():
