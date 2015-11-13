@@ -104,6 +104,8 @@ def editCharacter(character_name, game_name):
 @app.route("/games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
 def deleteCharacter(character_name, game_name):
 	characterToDelete = session.query(Character).filter_by(name=character_name).one()
+	# Require game instance to avoid "Parent instance is not bound to a Session" error.
+	# Not being used for anything more.
 	game = session.query(Game).filter_by(name=game_name).one()
 	if request.method == "POST":
 		session.delete(characterToDelete)

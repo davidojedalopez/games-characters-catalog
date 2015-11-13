@@ -78,5 +78,22 @@ tracer = Character(name="Tracer",
 session.add(tracer)
 session.commit()
 
+# Zelda Game and Characters
+zelda = Game(name="Zelda",
+	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
+session.add(zelda)
+session.commit()
+
+# Super Smash Bros Game and Characters
+super_smash = Game(name="Super Smash Bros.",
+	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
+session.add(super_smash)
+session.commit()
+
+# Gears of War Game and Characters
+gears_of_war = Game(name="Gears of War",
+	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
+session.add(super_smash)
+session.commit()
 
 print "Added games and characters!"
