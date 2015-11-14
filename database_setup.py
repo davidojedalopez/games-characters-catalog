@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Sequence
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from flask.ext.login import LoginManager, UserMixin
 
 Base = declarative_base()
 
@@ -41,13 +42,13 @@ class Character(Base):
 			"photo_url" : self.photo_url,
 		}
 
-class User(Base):
+class User(UserMixin, Base):
 	__tablename__ = "user"
 
 	id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
-	email = Column(String(50), nullable=False)
-	profile_photo_url = Column(String(250))
-	nickname = Column(String(50))
+	social_id = Column(String(50), nullable=False, unique=True)
+	nickname = Column(String(50), nullable=False)
+	email = Column(String(50), nullable=False)	
 
 	@property
 	def serialize(self):
@@ -55,7 +56,8 @@ class User(Base):
 		return {
 			"id" : self.id,
 			"email" : self.email,
-			"profile_photo_url" : self.profile_photo_url,
+			"nickname" : self.nickname,
+			"social_id" : social_id,
 		}
 
 engine = create_engine("sqlite:///game_characters_menu.db")

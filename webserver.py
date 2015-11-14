@@ -3,8 +3,23 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character, User
+from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user
+from oauth import OAuthSignIn
 
 app = Flask(__name__)
+lm = LoginManager(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.d'
+app.config['OAUTH_CREDENTIALS'] = {
+    'facebook': {
+        'id': '470154729788964',
+        'secret': '010cc08bd4f51e34f3f3e684fbdea8a7'
+    },
+    'google': {
+        'id': '329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36.apps.googleusercontent.com',
+        'secret': 'tWckctJkAaUY4x-8Tedjc1c7'
+    }
+}
 
 engine = create_engine("sqlite:///game_characters_menu.db")
 Base.metadata.bind = engine
@@ -129,6 +144,45 @@ def deleteCharacter(character_name, game_name):
 		return redirect(url_for("showCharacters", game_name=characterToDelete.game.name))
 	else:
 		return render_template("deleteCharacter.html", character=characterToDelete)
+
+@lm.user_loader
+def load_user(id):
+    return session.query(User).get(int(id))
+
+@app.route("/login")
+def index():
+	return render_template("index.html")
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
+
+
+@app.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    social_id, username, email = oauth.callback()
+    if social_id is None:
+        flash('Authentication failed.')
+        return redirect(url_for('index'))
+    user = session.query(User).filter_by(social_id=social_id).first()
+    if not user:
+        user = User(social_id=social_id, nickname=username, email=email)
+        session.add(user)
+        session.commit()
+    login_user(user, True)
+    return redirect(url_for('index'))
 
 #@app.route("games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
 #def deleteCharacter():
