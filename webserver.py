@@ -2,10 +2,16 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Game, Character
+from database_setup import Base, Game, Character, User
 from flask import session as login_session
+from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+from auth import OAuthSignIn, GoogleSignIn
 
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+app.config.from_pyfile("config.cfg")
 
 engine = create_engine("sqlite:///game_characters_menu.db")
 Base.metadata.bind = engine
@@ -131,6 +137,49 @@ def deleteCharacter(character_name, game_name):
 	else:
 		return render_template("deleteCharacter.html", character=characterToDelete)
 
+@app.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    # Flask-Login function
+    if not current_user.is_anonymous:
+        return redirect(url_for('showGames'))
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
+
+@app.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('showGames'))
+    oauth = OAuthSignIn.get_provider(provider)
+    username, email = oauth.callback()
+    if email is None:
+        # I need a valid email address for my user identification
+        flash('Authentication failed.')
+        return redirect(url_for('showGames'))
+    # Look if the user already exists
+    user=session.query(User).filter_by(email=email).first()
+    if not user:
+        # Create the user. Try and use their name returned by Google,
+        # but if it is not set, split the email address at the @.
+        nickname = username
+        if nickname is None or nickname == "":
+            nickname = email.split('@')[0]
+
+        # We can do more work here to ensure a unique nickname, if you 
+        # require that.
+        user=User(nickname=nickname, email=email)
+        session.add(user)
+        session.commit()
+    # Log in the user, by default remembering them for their next visit
+    # unless they log out.
+    login_user(user, remember=True)
+    return redirect(url_for('showGames'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    #if g.user is not None and g.user.is_authenticated():
+     #   return redirect(url_for('showGames'))
+    return render_template('login.html',
+                           title='Sign In')
 
 #@app.route("games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
 #def deleteCharacter():

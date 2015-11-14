@@ -47,6 +47,7 @@ class User(Base):
 	id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
 	email = Column(String(50), nullable=False)
 	profile_photo_url = Column(String(250))
+	nickname = Column(String(50))
 
 	@property
 	def serialize(self):
