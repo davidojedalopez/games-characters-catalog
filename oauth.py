@@ -2,6 +2,7 @@ import random, string
 from rauth import OAuth1Service, OAuth2Service
 from flask import current_app, url_for, request, redirect, session
 import json
+import urllib2
 
 class OAuthSignIn(object):
     providers = None
@@ -71,13 +72,15 @@ class FacebookSignIn(OAuthSignIn):
 class GoogleSignIn(OAuthSignIn):
     def __init__(self):
         super(GoogleSignIn, self).__init__('google')
+        googleinfo = urllib2.urlopen('https://accounts.google.com/.well-known/openid-configuration')
+        google_params = json.load(googleinfo)
         self.service = OAuth2Service(
             name='google',
             client_id=self.consumer_id,
             client_secret=self.consumer_secret,
-            authorize_url='https://accounts.google.com/o/oauth2/v2/auth',
-            access_token_url='https://www.googleapis.com/oauth2/v4/token',
-            base_url='https://www.googleapis.com/oauth2/v3/userinfo'
+            authorize_url=google_params.get("authorization_endpoint"),
+            access_token_url=google_params.get('token_endpoint'),
+            base_url=google_params.get('userinfo_endpoint')
         )
 
     def authorize(self):
