@@ -42,5 +42,3 @@ Thumbs.db
 # Vagrant files #
 #####################
 *.vagrant
-*.sh
-Vagrantfile

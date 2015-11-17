@@ -39,7 +39,8 @@ class Character(Base):
 			"id" : self.id,
 			"name" : self.name,
 			"bio" : self.bio,
-			"photo_url" : self.photo_url,
+			"photo_url" : self.photo_url,			
+			"game_name" : self.game.name
 		}
 
 class User(UserMixin, Base):
