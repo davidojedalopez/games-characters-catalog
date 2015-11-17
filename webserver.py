@@ -189,7 +189,7 @@ def oauth_callback(provider):
         session.add(user)
         session.commit()
     login_user(user, True)
-    return redirect(url_for('index'))
+    return redirect(url_for('showGames'))
 
 #@app.route("games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
 #def deleteCharacter():
