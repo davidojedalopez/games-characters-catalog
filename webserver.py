@@ -3,11 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character, User
-from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user
+from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 
 app = Flask(__name__)
-lm = LoginManager(app)
+login_manager = LoginManager(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.d'
 app.config['OAUTH_CREDENTIALS'] = {
@@ -33,7 +33,7 @@ def redirectToGames():
 @app.route("/games/")
 def showGames():
 	games = session.query(Game)
-	return render_template("games.html", games=games)
+	return render_template("games.html", games=games, current_user=current_user)
 
 @app.route("/games/JSON")
 def gamesJSON():
@@ -67,6 +67,7 @@ def gameCharactersJSON(game_name):
 	return jsonify(characters=[r.serialize for r in characters])
 
 @app.route("/games/new/", methods=["GET", "POST"])
+@login_required
 def newGame():
     if request.method == "POST":
         newGame = Game(name=request.form["name"], logo_url=request.form["logo_url"])
@@ -78,6 +79,7 @@ def newGame():
         return render_template("newGame.html")
 
 @app.route("/characters/new", methods=["GET", "POST"])
+@login_required
 def newCharacter():
 	if request.method == "POST":
 		game = session.query(Game).filter_by(name=request.form["game"]).one()
@@ -90,6 +92,7 @@ def newCharacter():
 		return render_template("newCharacter.html")
 
 @app.route("/games/<game_name>/edit/", methods=["GET", "POST"])
+@login_required
 def editGame(game_name):
 	editedGame = session.query(Game).filter_by(name=game_name).one()
 	if request.method == "POST":
@@ -103,6 +106,7 @@ def editGame(game_name):
 		return render_template("editGame.html", game=editedGame)
 
 @app.route("/games/<game_name>/delete/", methods=["GET", "POST"])
+@login_required
 def deleteGame(game_name):
 	gameToDelete = session.query(Game).filter_by(name=game_name).one()
 	if request.method == "POST":
@@ -115,6 +119,7 @@ def deleteGame(game_name):
 
 #@app.route("/characters/<character_name>/edit", methods=["GET", "POST"])
 @app.route("/games/<game_name>/characters/<character_name>/edit", methods=["GET", "POST"])
+@login_required
 def editCharacter(character_name, game_name):
 	editedCharacter = session.query(Character).filter_by(name=character_name).one()	
 	games = session.query(Game).all()	
@@ -132,6 +137,7 @@ def editCharacter(character_name, game_name):
 		return render_template("editCharacter.html", character=editedCharacter, games=games)
 
 @app.route("/games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
+@login_required
 def deleteCharacter(character_name, game_name):
 	characterToDelete = session.query(Character).filter_by(name=character_name).one()
 	# Require game instance to avoid "Parent instance is not bound to a Session" error.
@@ -145,7 +151,7 @@ def deleteCharacter(character_name, game_name):
 	else:
 		return render_template("deleteCharacter.html", character=characterToDelete)
 
-@lm.user_loader
+@login_manager.user_loader
 def load_user(id):
     return session.query(User).get(int(id))
 
@@ -154,6 +160,7 @@ def index():
 	return render_template("index.html")
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
