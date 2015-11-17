@@ -33,7 +33,7 @@ def redirectToGames():
 @app.route("/games/")
 def showGames():
 	games = session.query(Game)
-	return render_template("games.html", games=games, current_user=current_user)
+	return render_template("games.html", games=games)
 
 @app.route("/games/JSON")
 def gamesJSON():
