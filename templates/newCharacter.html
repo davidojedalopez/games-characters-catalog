@@ -24,7 +24,11 @@
 							Game:
 						</label>
 
-						<input type ="text" class="form-control" maxlength="100" name="game">
+						<select name="game" class="form-control" title="Choose a game">
+							{% for game in games %}
+								<option value="{{game.name}}">{{game.name}}</option>
+			                {% endfor %}
+		            	</select>
 						<br>
 
 						<label for="photo_url">
@@ -35,7 +39,7 @@
 						<br>
 			
 						<button type="submit" class="btn btn-primary btn-lg" id="submit" type="submit">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>  Create
+							<i class="fa fa-check"></i> Create
 						</button>
 
 					</div><!-- form-group -->

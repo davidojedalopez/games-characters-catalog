@@ -117,9 +117,10 @@ def newCharacter():
 		session.add(newCharacter)
 		flash("New Character %s Successfully Created" % newCharacter.name)
 		session.commit()
-		return redirect(url_for("showAllCharacters"))
+		return redirect(url_for("showCharacters", game_name=game.name))
 	else:
-		return render_template("newCharacter.html")
+		games = session.query(Game).all()
+		return render_template("newCharacter.html", games=games)
 
 @app.route("/games/<game_name>/edit/", methods=["GET", "POST"])
 @login_required
