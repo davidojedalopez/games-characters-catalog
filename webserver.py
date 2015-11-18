@@ -8,18 +8,20 @@ from oauth import OAuthSignIn
 from lxml import etree
 
 app = Flask(__name__)
+# Create a Login Manager instance for the log in and log out of users
 login_manager = LoginManager(app)
 
+# Base configuration. Probably better on an external file?
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.d'
 app.config['OAUTH_CREDENTIALS'] = {
-    'facebook': {
-        'id': '470154729788964',
-        'secret': '010cc08bd4f51e34f3f3e684fbdea8a7'
-    },
-    'google': {
-        'id': '329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36.apps.googleusercontent.com',
-        'secret': 'tWckctJkAaUY4x-8Tedjc1c7'
-    }
+	'facebook': {
+		'id': '470154729788964',
+		'secret': '010cc08bd4f51e34f3f3e684fbdea8a7'
+	},
+	'google': {
+		'id': '329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36.apps.googleusercontent.com',
+		'secret': 'tWckctJkAaUY4x-8Tedjc1c7'
+	}
 }
 
 engine = create_engine("sqlite:///game_characters_menu.db")
@@ -29,24 +31,45 @@ session = DBSession()
 
 @app.route("/")
 def redirectToGames():
+	"""
+	Redirects to main page, games.
+	"""
 	return redirect("/games/")
 
 @app.route("/games/")
 def showGames():
+	"""
+	Shows all the available games on the games.html template.
+	"""
+	# Get all games
 	games = session.query(Game)
 	return render_template("games.html", games=games)
 
 @app.route("/games/JSON")
 def gamesJSON():
+	"""
+	API endpoint for JSON. Shows all the games with its characters.
+	"""
+	# Get all games
 	games = session.query(Game).all()
 	return jsonify(games=[r.serialize for r in games])
 
 @app.route("/games/XML")
 def gamesXML():
-	games = session.query(Game).all()	
+	"""
+	API endpoint for XML. Shows all the games with its characters.
+	"""
+	# Get all games
+	games = session.query(Game).all()
+
+	# Build the XML tree with strings
 	xml_response ="<games>"
+
 	for game in games:
+
+		# Get all the characters of the game
 		characters = session.query(Character).filter_by(game_id=game.id)	
+
 		xml_response += """
 			<game>
 				<name>
@@ -55,6 +78,7 @@ def gamesXML():
 				<logo_url>
 					{1}
 				</logo_url>""".format(game.name, game.logo_url)
+		# if there are characters for the game, list them too
 		if characters != None:
 			xml_response += "<characters>"
 			for character in characters:					
@@ -72,47 +96,55 @@ def gamesXML():
 
 @app.route("/characters/")
 def showAllCharacters():
+	"""
+	Shows all characters.
+	"""
 	characters = session.query(Character).all()
 	return render_template("characters.html", characters=characters)
 
 @app.route("/games/<game_name>/")
 def redirectToCharacters(game_name):
+	"""
+	Redirects to characters page for the specified game.
+	"""
 	return redirect("games/%s/characters" % game_name)
 
 @app.route("/games/<game_name>/characters")
 def showCharacters(game_name):
+	"""
+	Shows all the characters of the specified game.
+	"""
 	game = session.query(Game).filter_by(name=game_name).one()
 	characters = session.query(Character).filter_by(game_id=game.id).all()
 	return render_template("characters.html", characters=characters, game=game)
 
-@app.route("/games/characters/JSON")
-def charactersJSON():
-	characters = session.query(Character).all()
-	return jsonify(characters=[r.serialize for r in characters])
-
-@app.route("/games/<game_name>/characters/JSON")
-def gameCharactersJSON(game_name):
-	game = session.query(Game).filter_by(name=game_name).one()
-	characters = session.query(Character).filter_by(game=game).all()
-	return jsonify(characters=[r.serialize for r in characters])
-
 @app.route("/games/new/", methods=["GET", "POST"])
 @login_required
 def newGame():
-    if request.method == "POST":
-        newGame = Game(name=request.form["name"], logo_url=request.form["logo_url"])
-        session.add(newGame)
-        flash("New Game %s Successfully Created" % newGame.name)
-        session.commit()
-        return redirect(url_for("showGames"))
-    else:
-        return render_template("newGame.html")
+	"""
+	Creates a new game.
+	"""
+	# If the route was accessed with a POST method
+	if request.method == "POST":
+	# Create game from form values
+		newGame = Game(name=request.form["name"], logo_url=request.form["logo_url"])
+		session.add(newGame)
+		flash("New Game %s Successfully Created" % newGame.name)
+		session.commit()
+		return redirect(url_for("showGames"))
+	else:
+		return render_template("newGame.html")
 
 @app.route("/characters/new", methods=["GET", "POST"])
 @login_required
 def newCharacter():
+	"""
+	Creates a new character.
+	"""
+	# If the route was accessed with a POST method
 	if request.method == "POST":
 		game = session.query(Game).filter_by(name=request.form["game"]).one()
+		# Create a character from form values
 		newCharacter = Character(name=request.form["name"], game=game, photo_url=request.form["photo_url"])
 		session.add(newCharacter)
 		flash("New Character %s Successfully Created" % newCharacter.name)
@@ -125,21 +157,32 @@ def newCharacter():
 @app.route("/games/<game_name>/edit/", methods=["GET", "POST"])
 @login_required
 def editGame(game_name):
+	"""
+	Edits the selected game.
+	"""
+	# Get the game to edit
 	editedGame = session.query(Game).filter_by(name=game_name).one()
+	# If the route was accessed with a POST method
 	if request.method == "POST":
+		# Get the new values from the form
 		if request.form["name"] and request.form["logo_url"]:
 			editedGame.name = request.form["name"]
-        	flash("Game Successfully Edited %s" % editedGame.name)
-        	editedGame.logo_url = request.form["logo_url"]
-        	flash("Game Successfully Edited %s" % editedGame.logo_url)
-        	return redirect(url_for("showGames"))
+			flash("Game Successfully Edited %s" % editedGame.name)
+			editedGame.logo_url = request.form["logo_url"]
+			flash("Game Successfully Edited %s" % editedGame.logo_url)
+			return redirect(url_for("showGames"))
 	else:
 		return render_template("editGame.html", game=editedGame)
 
 @app.route("/games/<game_name>/delete/", methods=["GET", "POST"])
 @login_required
 def deleteGame(game_name):
+	"""
+	Deletes the specified game.
+	"""
+	# Select the game to delete
 	gameToDelete = session.query(Game).filter_by(name=game_name).one()
+	# If the route was accessed with a POST method
 	if request.method == "POST":
 		session.delete(gameToDelete)
 		flash('%s Successfully Deleted' % gameToDelete.name)
@@ -148,14 +191,19 @@ def deleteGame(game_name):
 	else:
 		return render_template("deleteGame.html", game=gameToDelete)
 
-#@app.route("/characters/<character_name>/edit", methods=["GET", "POST"])
 @app.route("/games/<game_name>/characters/<character_name>/edit", methods=["GET", "POST"])
 @login_required
 def editCharacter(character_name, game_name):
+	"""
+	Edits a character.
+	"""
+	# Get the character to edit
 	editedCharacter = session.query(Character).filter_by(name=character_name).one()	
-	games = session.query(Game).all()	
+	games = session.query(Game).all()
+	# If the route was accessed with a POST method
 	if request.method == "POST":
 		game = session.query(Game).filter_by(name=request.form["game"]).one()
+		# If all the requested values are filled
 		if request.form["name"] and request.form["photo_url"] and game:						
 			editedCharacter.name = request.form["name"]			
 			flash("Character Successfully Edited %s" % editedCharacter.name)
@@ -170,10 +218,15 @@ def editCharacter(character_name, game_name):
 @app.route("/games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
 @login_required
 def deleteCharacter(character_name, game_name):
+	"""
+	Deletes a character.
+	"""
+	# Selects the character to delete
 	characterToDelete = session.query(Character).filter_by(name=character_name).one()
 	# Require game instance to avoid "Parent instance is not bound to a Session" error.
 	# Not being used for anything more.
 	game = session.query(Game).filter_by(name=game_name).one()
+	# If the route was accessed with a POST method
 	if request.method == "POST":
 		session.delete(characterToDelete)
 		flash("%s Successfully Deleted" % characterToDelete.name)
@@ -184,46 +237,52 @@ def deleteCharacter(character_name, game_name):
 
 @login_manager.user_loader
 def load_user(id):
-    return session.query(User).get(int(id))
-
-@app.route("/login")
-def index():
-	return render_template("index.html")
+	"""
+	Loads user information based on ID.
+	"""
+	return session.query(User).get(int(id))
 
 @app.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('showGames'))
+	"""
+	Logs out the current logged in user.
+	"""
+	logout_user()
+	return redirect(url_for('showGames'))
 
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
-    if not current_user.is_anonymous:
-        return redirect(url_for('showGames'))
-    oauth = OAuthSignIn.get_provider(provider)
-    return oauth.authorize()
+	"""
+	Creates the OAuthSignIn instance with the given provider, then continues the authorization flow.
+	"""
+	if not current_user.is_anonymous:
+		return redirect(url_for('showGames'))
+	oauth = OAuthSignIn.get_provider(provider)
+	return oauth.authorize()
 
 
 @app.route('/callback/<provider>')
 def oauth_callback(provider):
-    if not current_user.is_anonymous:
-        return redirect(url_for('index'))
-    oauth = OAuthSignIn.get_provider(provider)
-    social_id, username, email = oauth.callback()
-    if social_id is None:
-        flash('Authentication failed.')
-        return redirect(url_for('index'))
-    user = session.query(User).filter_by(social_id=social_id).first()
-    if not user:
-        user = User(social_id=social_id, nickname=username, email=email)
-        session.add(user)
-        session.commit()
-    login_user(user, True)
-    return redirect(url_for('showGames'))
+	"""
+	Callback function for OAuth flow.
+	"""
+	if not current_user.is_anonymous:
+		return redirect(url_for('showGames'))
+	oauth = OAuthSignIn.get_provider(provider)
+	social_id, username, email = oauth.callback()
+	if social_id is None:
+		flash('Authentication failed.')
+		return redirect(url_for('showGames'))
+	user = session.query(User).filter_by(social_id=social_id).first()
+	if not user:
+		user = User(social_id=social_id, nickname=username, email=email)
+		session.add(user)
+		session.commit()
+	login_user(user, True)
+	return redirect(url_for('showGames'))
 
-#@app.route("games/<game_name>/characters/<character_name>/delete", methods=["GET", "POST"])
-#def deleteCharacter():
 if __name__ == "__main__":
 	app.secret_key = "super_secret_key"
 	app.debug = True
