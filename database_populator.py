@@ -47,7 +47,7 @@ session.commit()
 
 # Stacraft Game and Characters
 starcraft = Game(name="Starcraft", 
-	logo_url="http://us.battle.net/sc2/static/images/legacy-of-the-void/header/LotV-header-logo.png")
+	logo_url="http://screenshots.en.sftcdn.net/en/scrn/304000/304793/starcraft-2-13.png")
 session.add(starcraft)
 session.commit()
 
@@ -67,7 +67,7 @@ session.commit()
 
 # Overwatch Game and Characters
 overwatch = Game(name="Overwatch", 
-	logo_url="https://pbs.twimg.com/media/B1-zfpSIEAEnpyw.jpg")
+	logo_url="http://i.imgur.com/YZ4w2ey.png")
 session.add(overwatch)
 session.commit()
 
@@ -80,20 +80,20 @@ session.commit()
 
 # Zelda Game and Characters
 zelda = Game(name="Zelda",
-	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
+	logo_url="http://www.cliparthut.com/clip-arts/369/legend-of-zelda-triforce-logo-369837.png")
 session.add(zelda)
 session.commit()
 
 # Super Smash Bros Game and Characters
 super_smash = Game(name="Super Smash Bros.",
-	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
+	logo_url="http://orig04.deviantart.net/9b0f/f/2014/341/f/1/ssb_symbol_by_britishvideogamenerd-d8905u7.png")
 session.add(super_smash)
 session.commit()
 
 # Gears of War Game and Characters
 gears_of_war = Game(name="Gears of War",
-	logo_url="https://yt3.ggpht.com/-pKiXsuYjEak/AAAAAAAAAAI/AAAAAAAAAAA/h0kGP1NtDr0/s900-c-k-no/photo.jpg")
-session.add(super_smash)
+	logo_url="http://orig05.deviantart.net/e71d/f/2008/143/d/5/gears_of_war_2_logo_by_ironno0b.jpg")
+session.add(gears_of_war)
 session.commit()
 
 print "Added games and characters!"

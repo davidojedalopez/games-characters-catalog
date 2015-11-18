@@ -193,13 +193,13 @@ def index():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('showGames'))
 
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
     if not current_user.is_anonymous:
-        return redirect(url_for('index'))
+        return redirect(url_for('showGames'))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 

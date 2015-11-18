@@ -40,11 +40,11 @@
 
 						{% if current_user.is_authenticated %}	
 							<a href="characters/{{character.name}}/edit" class="btn btn-warning">
-								Edit
+								<i class="fa fa-edit"></i> Edit
 							</a>
 
 							<a href="characters/{{character.name}}/delete" class="btn btn-danger">
-								Delete
+								<i class="fa fa-exclamation-triangle"></i> Delete
 							</a>
 						{% endif %}	
 

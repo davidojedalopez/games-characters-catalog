@@ -2,3 +2,12 @@ body {
 	background-color: #161b1d;
 	color: white;
 }
+#btn-logout {
+	background-color: #ff3333;
+	color: white;	
+	border-radius: 15px;
+}
+.thumb {
+	width: 300px;
+	height: 300px;
+}
