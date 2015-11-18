@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character, User
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
+from lxml import etree
 
 app = Flask(__name__)
 login_manager = LoginManager(app)
@@ -39,6 +40,35 @@ def showGames():
 def gamesJSON():
 	games = session.query(Game).all()
 	return jsonify(games=[r.serialize for r in games])
+
+@app.route("/games/XML")
+def gamesXML():
+	games = session.query(Game).all()	
+	xml_response ="<games>"
+	for game in games:
+		characters = session.query(Character).filter_by(game_id=game.id)	
+		xml_response += """
+			<game>
+				<name>
+					{0}
+				</name>
+				<logo_url>
+					{1}
+				</logo_url>""".format(game.name, game.logo_url)
+		if characters != None:
+			xml_response += "<characters>"
+			for character in characters:					
+				xml_response += """
+					<character>					
+					<name>{0}</name>
+					<bio>{1}</bio>
+					<photo_url>{2}</photo_url>
+					</character>
+					""".format(character.name, character.bio, character.photo_url)
+			xml_response += "</characters>"
+		xml_response += "</game>"
+	xml_response += "</games>"
+	return xml_response, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
 @app.route("/characters/")
 def showAllCharacters():
