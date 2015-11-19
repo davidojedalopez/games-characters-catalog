@@ -2,6 +2,7 @@
 {% block content %}
 
 	<section class="container">
+
 		<h1>
 			Games			
 		</h1>
@@ -9,16 +10,18 @@
 		{% if current_user.is_authenticated %}
 			<a href="{{url_for('newGame')}}">
 				<button class="btn btn-lg btn-primary">
-					<i class="fa fa-plus"></i></span> Add Game
+					<i class="fa fa-plus"></i> Add Game
 				</button>
 			</a>
 		{% endif %}
+
 	</section>
 	
 	<section class="container text-center">
 		<div class="row">
 			{% for game in games %}			
 				<div class=" col-xs-1 col-md-4">
+
 					<a href="{{game.name}}">					
 						<h2>
 							{{game.name}}
@@ -27,6 +30,7 @@
 						<img class="img img-responsive img-thumbnail center-block" src="{{game.logo_url}}" height="150" width="150">
 					</a>	
 					<br>
+
 					{% if current_user.is_authenticated %}
 						<a href="{{game.name}}/edit" class="btn btn-warning">
 							<i class="fa fa-pencil-square-o"></i> Edit
@@ -35,7 +39,8 @@
 						<a href="{{game.name}}/delete" class="btn btn-danger">
 							<i class="fa fa-exclamation-triangle"></i> Delete
 						</a>
-					{% endif %}										
+					{% endif %}
+															
 				</div><!-- col-xs-1 col-md-3 -->
 			{% endfor %}
 		</div><!-- row -->

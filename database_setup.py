@@ -27,7 +27,7 @@ class Character(Base):
 
 	id = Column(Integer, Sequence("character_id_seq"), primary_key=True)
 	name = Column(String(30), nullable=False)
-	bio = Column(String(250))
+	bio = Column(String(400))
 	photo_url = Column(String(250), nullable=False)
 	game_id = Column(Integer, ForeignKey("game.id"))
 	game = relationship(Game)

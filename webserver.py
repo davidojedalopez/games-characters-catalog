@@ -1,11 +1,10 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character, User
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
-from lxml import etree
 import json
 
 app = Flask(__name__)
@@ -16,8 +15,8 @@ login_manager = LoginManager(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.d'
 app.config['OAUTH_CREDENTIALS'] = {
 	'facebook': {
-		'id': '470154729788964',
-		'secret': '010cc08bd4f51e34f3f3e684fbdea8a7'
+		'id': '###########',
+		'secret': '##########'
 	},
 	'google': {
 		'id': '329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36.apps.googleusercontent.com',
@@ -53,21 +52,25 @@ def gamesJSON():
 	"""
 	# Get all games
 	games = session.query(Game).all()
+	# Create the JSON response with dicts and lists
 	json_response = {
 		"games" : []
 	}
 	for game in games:
+		# Add each game to the response
 		json_response["games"].append(
 				{
 					"game" : {
 						"name" : game.name,
 						"logo_url" : game.logo_url,
-						"characters" : []
+						"characters" : [] # This will hold all the characters of the game
 					}
 				}
 			)
+		# Get all characters from the specified game
 		characters = session.query(Character).filter_by(game_id=game.id)
 		for character in characters:
+			# Add each character to the response
 			json_response["games"][character.game_id-1]["game"]["characters"].append(
 					{
 						"name" : character.name,
@@ -75,7 +78,7 @@ def gamesJSON():
 						"bio" : character.bio
 					}
 				)
-
+	# return the JSON response correctly formated
 	return json.dumps(json_response)
 
 @app.route("/games/XML")
@@ -116,15 +119,8 @@ def gamesXML():
 			xml_response += "</characters>"
 		xml_response += "</game>"
 	xml_response += "</games>"
+	# return the XML response correctly formated
 	return xml_response, 200, {'Content-Type': 'text/xml; charset=utf-8'}
-
-@app.route("/characters/")
-def showAllCharacters():
-	"""
-	Shows all characters.
-	"""
-	characters = session.query(Character).all()
-	return render_template("characters.html", characters=characters)
 
 @app.route("/games/<game_name>/")
 def redirectToCharacters(game_name):
@@ -138,7 +134,9 @@ def showCharacters(game_name):
 	"""
 	Shows all the characters of the specified game.
 	"""
+	# Get game from URL
 	game = session.query(Game).filter_by(name=game_name).one()
+	# Get all characters for the specified game
 	characters = session.query(Character).filter_by(game_id=game.id).all()
 	return render_template("characters.html", characters=characters, game=game)
 
@@ -258,6 +256,15 @@ def deleteCharacter(character_name, game_name):
 		return redirect(url_for("showCharacters", game_name=characterToDelete.game.name))
 	else:
 		return render_template("deleteCharacter.html", character=characterToDelete)
+
+@app.route("/games/<game_name>/characters/<character_name>/bio")
+def showBio(game_name, character_name):
+	"""
+	Shows the "bio" field for the character provided on the URL.
+	"""
+	character = session.query(Character).filter_by(name=character_name).one()	
+	game = session.query(Game).filter_by(name=game_name).one()
+	return render_template("characterBio.html", character=character, game=game)
 
 @login_manager.user_loader
 def load_user(id):

@@ -18,25 +18,25 @@
 			<div class="container">
 				<a href="{{url_for('newCharacter')}}">
 					<button class="btn btn-primary btn-lg">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Add Character
+						<i class="fa fa-plus"></i>  Add Character
 					</button>
 				</a>	
 			</div><!-- container -->
 		{% endif %}
 
-		{% if characters != [] %}	
+		{% if characters != [] %}
+
 			<div class="row text-center">
 				{% for character in characters %}
 					<div class="col-xs-1 col-md-3">	
-						<h2>
-							{{character.name}}
-						</h2>
 
-						<p>
-							{{character.bio}}
-						</p>
+						<a href="{{url_for('showBio', game_name=game.name, character_name=character.name)}}">
+							<h2>
+								{{character.name}}
+							</h2>
 
-						<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
+							<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
+						</a>
 
 						{% if current_user.is_authenticated %}	
 							<a href="characters/{{character.name}}/edit" class="btn btn-warning">
