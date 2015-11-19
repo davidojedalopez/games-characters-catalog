@@ -6,6 +6,7 @@ from database_setup import Base, Game, Character, User
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from lxml import etree
+import json
 
 app = Flask(__name__)
 # Create a Login Manager instance for the log in and log out of users
@@ -52,7 +53,30 @@ def gamesJSON():
 	"""
 	# Get all games
 	games = session.query(Game).all()
-	return jsonify(games=[r.serialize for r in games])
+	json_response = {
+		"games" : []
+	}
+	for game in games:
+		json_response["games"].append(
+				{
+					"game" : {
+						"name" : game.name,
+						"logo_url" : game.logo_url,
+						"characters" : []
+					}
+				}
+			)
+		characters = session.query(Character).filter_by(game_id=game.id)
+		for character in characters:
+			json_response["games"][character.game_id-1]["game"]["characters"].append(
+					{
+						"name" : character.name,
+						"photo_url" : character.photo_url,
+						"bio" : character.bio
+					}
+				)
+
+	return json.dumps(json_response)
 
 @app.route("/games/XML")
 def gamesXML():
