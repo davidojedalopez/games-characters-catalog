@@ -21,17 +21,20 @@
 					<input type ="text" class="form-control" name="logo_url" value="{{game.logo_url}}">	
 					<br>
 					
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
 					<button type="submit" class="btn btn-default" id="submit" type="submit">
 
-					<i class="fa fa-check"></i> Save</button>
-
-					<a href = '{{url_for('showGames')}}'>
-						<button class="btn btn-default delete">
-						<i class="fa fa-close"></i> Cancel</button>
-					</a>
+					<i class="fa fa-check"></i> Save</button>				
 
 				</div><!-- form-group -->
 			</form>
+
+			<a href = '{{url_for('showGames')}}'>
+				<button class="btn btn-default delete">
+				<i class="fa fa-close"></i> Cancel</button>
+			</a>	
+			
 		</div><!-- col-md-6 col-md-offset-1 padding-top -->
 	</div><!-- row -->
 	

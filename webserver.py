@@ -5,12 +5,14 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Character, User
 from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
+from flask.ext.seasurf import SeaSurf
 import json
 
 
 app = Flask(__name__)
 # Create a Login Manager instance for the log in and log out of users
 login_manager = LoginManager(app)
+csrf = SeaSurf(app)
 
 # Base configuration. Probably better on an external file?
 # TODO Create Facebook app and add ID and secret 

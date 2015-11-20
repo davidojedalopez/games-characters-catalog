@@ -9,3 +9,4 @@ pip install rauth==0.7.2
 pip install oauth2client
 pip install requests
 pip install httplib2
+pip install flask-seasurf
