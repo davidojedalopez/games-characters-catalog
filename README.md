@@ -40,23 +40,33 @@ I. File list
 
 II. Installation
 ------------
-The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: https://docs.vagrantup.com/v2/installation/.
+<p>The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: https://docs.vagrantup.com/v2/installation/.<p>
 
-With Vagrant:
-	From the cmd line:
-		1. $ cd /path/to/your/repo
-		2. $ vagrant up (Read the Vagrantfile and pg_config.sh files and set up the VM with all the needed dependencies.)
-		3. $ python database_setup.py (Sets up the database)
-		4. $ python database_populator.py (Optional. Populates the database)
-		5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
-
-Without Vagrant:
-	1. Install all the dependencies listed on the pg_config.sh file.
-	From the cmd line:
-		2. $ cd /path/to/your/repo
-		3. $ python database_setup.py (Sets up the database)
-		4. $ python database_populator.py (Optional. Populates the database)
-		5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
+<ul>
+	<li>
+		<p>With Vagrant:</p>
+		<p>From the cmd line:</p>
+			<ol>
+				<li>$ cd /path/to/your/repo</li>
+				<li>$ vagrant up (Read the Vagrantfile and pg_config.sh files and set up the VM with all the needed dependencies.)</li>
+				<li>$ python database_setup.py (Sets up the database)</li>
+				<li>$ python database_populator.py (Optional. Populates the database)</li>
+				<li>$ python webserver.py (Starts the webserver at 127.0.0.1:5000)</li>
+			</ol>		
+	</li>
+	<li>
+		<p>Without Vagrant:</p>
+		<ol>
+			<li>Install all the dependencies listed on the pg_config.sh file.</li>
+			<ol>
+				<li>$ cd /path/to/your/repo</li>
+				<li>$ python database_setup.py (Sets up the database)</li>
+				<li>$ python database_populator.py (Optional. Populates the database)</li>
+				<li>$ python webserver.py (Starts the webserver at 127.0.0.1:5000)</li>
+			</ol>
+		</ol>
+	</li>
+</ul>
 ------------
 
 
