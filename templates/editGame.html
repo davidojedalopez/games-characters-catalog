@@ -1,15 +1,11 @@
 {% extends "main.html" %}
 {% block content %}
 
-	<div class="row divider green">
-		<div class="col-md-12"></div>
-	</div>
-
-	<div class="row banner menu">
+	<div class="row">
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>Edit {{game.name}}</h1>
 		</div>
-	</div>
+	</div><!-- row  -->
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-1 padding-top">
@@ -34,8 +30,9 @@
 						<i class="fa fa-close"></i> Cancel</button>
 					</a>
 
-				</div>
+				</div><!-- form-group -->
 			</form>
-		</div>
+		</div><!-- col-md-6 col-md-offset-1 padding-top -->
 	</div><!-- row -->
+	
 {% endblock %}

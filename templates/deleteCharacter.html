@@ -1,14 +1,22 @@
 {% extends "main.html" %}
 {% block content %}
-<h2> Are you sure you want to delete {{character.name}}? </h2>
 
-<form action="{{ url_for('deleteCharacter', character_name = character.name, game_name = character.game.name)}}", method = 'post'>
-	<button type="submit" class="btn btn-default delete" id="submit" type="submit">
-	<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
-	<a href = "{{url_for('showCharacters', game_name = character.game.name)}}">
-		<button class="btn btn-default">
-		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
-	</a>	
-</form>
+	<h2>
+		Are you sure you want to delete {{character.name}}?
+	</h2>
+
+	<form action="{{ url_for('deleteCharacter', character_name = character.name, game_name = character.game.name)}}", method = 'post'>
+
+		<button type="submit" class="btn btn-default" id="submit" type="submit">
+
+		<i class="fa fa-trash-o"></i> Delete</button>
+
+		<a href = "{{url_for('showCharacters', game_name = character.game.name)}}">
+			<button class="btn btn-default">
+				<i class="fa fa-close"></i> Cancel
+			</button>
+		</a>	
+
+	</form>
 
 {% endblock %}

@@ -7,12 +7,14 @@ from flask.ext.login import LoginManager, UserMixin, login_user, logout_user, cu
 from oauth import OAuthSignIn
 import json
 
+
 app = Flask(__name__)
 # Create a Login Manager instance for the log in and log out of users
 login_manager = LoginManager(app)
 
 # Base configuration. Probably better on an external file?
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.d'
+# TODO Create Facebook app and add ID and secret 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.db'
 app.config['OAUTH_CREDENTIALS'] = {
 	'facebook': {
 		'id': '###########',
@@ -24,7 +26,7 @@ app.config['OAUTH_CREDENTIALS'] = {
 	}
 }
 
-engine = create_engine("sqlite:///game_characters_menu.db")
+engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -282,36 +284,48 @@ def logout():
 	logout_user()
 	return redirect(url_for('showGames'))
 
-
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
 	"""
-	Creates the OAuthSignIn instance with the given provider, then continues the authorization flow.
+	Creates the OAuthSignIn instance with the given provider, then continues the
+	authorization flow.
 	"""
+	# Check if the user is not logged in already
 	if not current_user.is_anonymous:
 		return redirect(url_for('showGames'))
+	# If not logged in, then we instantiate the corresponding OAuthSignIn subclass
 	oauth = OAuthSignIn.get_provider(provider)
 	return oauth.authorize()
-
 
 @app.route('/callback/<provider>')
 def oauth_callback(provider):
 	"""
-	Callback function for OAuth flow.
+	Callback function for OAuth flow. The OAuth provider redirects back to the application 
+	after the user authenticates and gives permission to share information.
 	"""
 	if not current_user.is_anonymous:
 		return redirect(url_for('showGames'))
+
+	# Instantiate the OAuthSignIn provider
 	oauth = OAuthSignIn.get_provider(provider)
+	# Get the social_id, nickname and email from the provider
 	social_id, username, email = oauth.callback()
+
 	if social_id is None:
 		flash('Authentication failed.')
 		return redirect(url_for('showGames'))
+
+	# Query for a user with the social_id previously obtained
 	user = session.query(User).filter_by(social_id=social_id).first()
+
+	# If the previous query does not returns an user, create it and add it to the database
 	if not user:
 		user = User(social_id=social_id, nickname=username, email=email)
 		session.add(user)
 		session.commit()
+
 	login_user(user, True)
+
 	return redirect(url_for('showGames'))
 
 if __name__ == "__main__":

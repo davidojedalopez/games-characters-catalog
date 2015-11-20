@@ -18,19 +18,23 @@ README.txt					This file
 
 II. Installation
 ------------
-The ideal way to run this application is to use Vagrant. If you do not have Vagrant installed you can follow these instructions:INSTRUCTINOS TO INSTALL VAGRANT.
+The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: https://docs.vagrantup.com/v2/installation/.
 
 With Vagrant:
 	From the cmd line:
 		1. $ cd /path/to/your/repo
 		2. $ vagrant up (Read the Vagrantfile and pg_config.sh files and set up the VM with all the needed dependencies.)
-		3. $ python setup.py (Sets up the database, populates it with the example data, and runs the webserver on port 127.0.0.1:5000)
+		3. $ python database_setup.py (Sets up the database)
+		4. $ python database_populator.py (Optional. Populates the database)
+		5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
 
 Without Vagrant:
 	1. Install all the dependencies listed on the pg_config.sh file.
 	From the cmd line:
 		2. $ cd /path/to/your/repo
-		3. $ python setup.py
+		3. $ python database_setup.py (Sets up the database)
+		4. $ python database_populator.py (Optional. Populates the database)
+		5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
 ------------
 
 

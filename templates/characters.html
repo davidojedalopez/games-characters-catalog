@@ -35,9 +35,10 @@
 								{{character.name}}
 							</h2>
 
-							<img class="img img-responsive center-block" src="{{character.photo_url}}" height="100" width="100">
+							<img class="img img-responsive img-thumbnail center-block" src="{{character.photo_url}}" height="150" width="150">
 						</a>
-
+						<br>
+						
 						{% if current_user.is_authenticated %}	
 							<a href="characters/{{character.name}}/edit" class="btn btn-warning">
 								<i class="fa fa-edit"></i> Edit
