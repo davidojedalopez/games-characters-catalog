@@ -16,7 +16,7 @@
 | database_populator.py | Bootstrap data to populate the database (optional) 				 |
 | webserver.py 		| Runs the webserver and contains the URL callbacks      			 |
 | oauth.py 		| Used for the OAuth2 authentication features      				 |
-| pg_config.sh 		| Provisioning file for Vagran      						 |
+| pg_config.sh 		| Provisioning file for Vagrant      						 |
 | Vagrantfile 		| Vagrant file containing the configuration details for the Virtual Machine (VM) |
 | static 		| Directory containing the CSS files      					 |
 | templates 		| Directory containing the HTML templates      					 |
