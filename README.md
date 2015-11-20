@@ -1,10 +1,13 @@
-<h1>Games Character Catalog</h1>
+#Games Character Catalog
 
-<p>Author: David Ojeda</p>
-<p>Email: david.ojeda.lopez@gmail.com</p>
+#### Python/Flask web application with basic CRUD database operations. Also provides user registration and authentication system.
 
 
-I. File list
+###### Author: David Ojeda
+###### Email: david.ojeda.lopez@gmail.com
+
+
+## I. File list
 ------------
 <table>
 	<tr>
@@ -35,50 +38,33 @@ I. File list
 		<td>README.txt</td>	<td>This file</td>
 	</tr>
 </table>
+
+## II. Installation
 ------------
+<p>The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: https://docs.vagrantup.com/v2/installation/.</p>
 
+With Vagrant, from the cmd line:
+ 1. $ cd /path/to/your/repo
+ 2. $ vagrant up (Read the Vagrantfile and pg_config.sh files and set up the VM with all the needed dependencies.)
+ 3. $ python database_setup.py (Sets up the database)
+ 4. $ python database_populator.py (Optional. Populates the database)
+ 5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
 
-II. Installation
+Without Vagrant, from the cmd line:
+ 1. Install all the dependencies listed on the pg_config.sh file.
+ 2. $ cd /path/to/your/repo
+ 3. $ python database_setup.py (Sets up the database)
+ 4. $ python database_populator.py (Optional. Populates the database)
+ 5. $ python webserver.py (Starts the webserver at 127.0.0.1:5000)
+
+## III. Usage
 ------------
-<p>The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: https://docs.vagrantup.com/v2/installation/.<p>
+<p>Current configuration lets you access the application through your local host at 127.0.0.1:5000 (Change the Vagrantfile if you need another port). From there you can start interacting with the web application.</p>
 
-<ul>
-	<li>
-		<p>With Vagrant:</p>
-		<p>From the cmd line:</p>
-			<ol>
-				<li>$ cd /path/to/your/repo</li>
-				<li>$ vagrant up (Read the Vagrantfile and pg_config.sh files and set up the VM with all the needed dependencies.)</li>
-				<li>$ python database_setup.py (Sets up the database)</li>
-				<li>$ python database_populator.py (Optional. Populates the database)</li>
-				<li>$ python webserver.py (Starts the webserver at 127.0.0.1:5000)</li>
-			</ol>		
-	</li>
-	<li>
-		<p>Without Vagrant:</p>
-		<ol>
-			<li>Install all the dependencies listed on the pg_config.sh file.</li>
-			<ol>
-				<li>$ cd /path/to/your/repo</li>
-				<li>$ python database_setup.py (Sets up the database)</li>
-				<li>$ python database_populator.py (Optional. Populates the database)</li>
-				<li>$ python webserver.py (Starts the webserver at 127.0.0.1:5000)</li>
-			</ol>
-		</ol>
-	</li>
-</ul>
+## IV. Comments
 ------------
-
-
-III. Usage
-------------
-Current configuration lets you access the application through your local host at 127.0.0.1:5000 (Change the Vagrantfile if you need another port). From there you can start interacting with the web application.
-------------
-
-
-IV. Comments
-------------
- This project is a small and simple web application that has the following features:
- 	- CRUD database operations
- 	- Authorization and authentication capability using OAuth2
- 	- JSON and XML API endpoints available at 127.0.0.1:5000/games/JSON and 127.0.0.1:5000/games/XML respectively
+<p>This project is a small and simple web application that has the following features:</p>
+ * CRUD database operations
+ * Authorization and authentication capability using OAuth2
+ * JSON and XML API endpoints available at 127.0.0.1:5000/games/JSON and 127.0.0.1:5000/games/XML respectively
+ 
