@@ -15,13 +15,8 @@ login_manager = LoginManager(app)
 csrf = SeaSurf(app)
 
 # Base configuration. Probably better on an external file?
-# TODO Create Facebook app and add ID and secret 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.db'
 app.config['OAUTH_CREDENTIALS'] = {
-	'facebook': {
-		'id': '###########',
-		'secret': '##########'
-	},
 	'google': {
 		'id': '329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36.apps.googleusercontent.com',
 		'secret': 'tWckctJkAaUY4x-8Tedjc1c7'

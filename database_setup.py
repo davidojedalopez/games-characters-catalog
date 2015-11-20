@@ -13,16 +13,6 @@ class Game(Base):
 	name = Column(String(50), nullable=False)	
 	logo_url = Column(String(250), nullable=False)
 
-	## Not really being used right now
-	# @property
-	# def serialize(self):
-	# 	"""Return object data in an easily serializable format"""
-	# 	return {
-	# 		"id" : self.id,
-	# 		"name" : self.name,
-	# 		"logo_url" : self.logo_url
-	# 	}
-
 class Character(Base):
 	__tablename__ = "character"
 
@@ -52,17 +42,6 @@ class User(UserMixin, Base):
 	social_id = Column(String(50), nullable=False, unique=True)	
 	nickname = Column(String(50), nullable=False)
 	email = Column(String(50), nullable=False)	
-
-	## Not really being used right now
-	# @property
-	# def serialize(self):
-	# 	"""Return object data in an easily serializable format"""
-	# 	return {
-	# 		"id" : self.id,
-	# 		"email" : self.email,
-	# 		"nickname" : self.nickname,
-	# 		"social_id" : social_id,
-	# 	}
 
 engine = create_engine("sqlite:///game_characters_menu.db")
 
