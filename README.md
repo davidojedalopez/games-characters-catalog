@@ -9,35 +9,18 @@
 
 ## I. File list
 ------------
-<table>
-	<tr>
-		<td>database_setup.py</td> 	<td>Sets up the database used in this project</td>
-	</tr>
-	<tr>
-		<td>database_populator.py</td> 	<td>Bootstrap data to populate the database (optional)</td>
-	</tr>
-	<tr>
-		<td>webserver.py</td> 	<td>Runs the webserver and contains the URL callbacks</td>
-	</tr>
-	<tr>
-		<td>oauth.py</td>		<td>Used for the OAuth2 authentication features</td>
-	</tr>
-	<tr>
-		<td>pg_config.sh </td> <td>Provisioning file for Vagrant</td>
-	</tr>
-	<tr>
-		<td>Vagrantfile</td>	<td>Vagrant file containing the configuration details for the Virtual Machine (VM)</td>
-	</tr>
-	<tr>
-		<td>static</td>	<td>Directory containing the CSS files</td>
-	</tr>
-	<tr>
-		<td>templates</td>	<td>Directory containing the HTML templates</td>
-	</tr>
-	<tr>
-		<td>README.txt</td>	<td>This file</td>
-	</tr>
-</table>
+
+| File          	| Description   								 |
+| --------------------- | ------------------------------------------------------------------------------ |
+| database_setup.py     | Sets up the database used in this project 					 |
+| database_populator.py | Bootstrap data to populate the database (optional) 				 |
+| webserver.py 		| Runs the webserver and contains the URL callbacks      			 |
+| oauth.py 		| Used for the OAuth2 authentication features      				 |
+| pg_config.sh 		| Provisioning file for Vagran      						 |
+| Vagrantfile 		| Vagrant file containing the configuration details for the Virtual Machine (VM) |
+| static 		| Directory containing the CSS files      					 |
+| templates 		| Directory containing the HTML templates      					 |
+| README.txt 		| This file						 			 |
 
 ## II. Installation
 ------------
