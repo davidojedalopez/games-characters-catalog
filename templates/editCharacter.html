@@ -1,21 +1,25 @@
 {% extends "main.html" %}
 {% block content %}
-	<div class="row divider green">
-		<div class="col-md-12"></div>
-	</div>
-	<div class="row banner menu">
+
+	<div class="row">
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>Edit {{character.name}}</h1>
 		</div>
 	</div>
+
 	<div class="row">
 		<div class="col-md-6 col-md-offset-1 padding-top">
 			<form action="{{url_for('editCharacter', character_name = character.name, game_name = character.game.name)}}" method = "post">
 				<div class="form-group">
+
 					<label for="name">Name:</label>
-					<input type ="text" class="form-control" name="name" value="{{character.name}}">
+					<input type ="text" class="form-control" name="name" value="{{character.name}}" required>
+					<br>
+
 					<label for="photo_url">Photo URL:</label>
-					<input type ="text" class="form-control" name="photo_url" value="{{character.photo_url}}">
+					<input type ="text" class="form-control" name="photo_url" value="{{character.photo_url}}" required>
+					<br>
+					
 					<select name="game" class="form-control">
 						{% if games != [] %}
 							{% for game in games %}
@@ -23,16 +27,17 @@
 							{% endfor %}
 						{% endif %}
 					</select>
-					<div class="padding-bottom"></div>
-					<button type="submit" class="btn btn-default" id="submit" type="submit">
-						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save
+				
+					<button type="submit" class="btn btn-default" id="submit" type="submit">		
+						<i class="fa fa-check"></i> Save
 					</button>
-					<a href = '{{url_for('showCharacters', game_name=character.game.name)}}' class="btn btn-default">
-						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
-					</a>					
-				</div>
-			</form>
 
-		</div>
+					<a href = '{{url_for('showCharacters', game_name=character.game.name)}}' class="btn btn-default">
+						<i class="fa fa-close"></i> Cancel
+					</a>
+
+				</div><!-- form-group -->
+			</form>
+		</div><!-- col-md-6 col-md-offset-1 padding-top -->
 	</div><!-- row -->
 {% endblock %}

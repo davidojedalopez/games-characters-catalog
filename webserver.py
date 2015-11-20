@@ -151,11 +151,12 @@ def newGame():
 	# If the route was accessed with a POST method
 	if request.method == "POST":
 	# Create game from form values
-		newGame = Game(name=request.form["name"], logo_url=request.form["logo_url"])
-		session.add(newGame)
-		flash("New Game %s Successfully Created" % newGame.name)
-		session.commit()
-		return redirect(url_for("showGames"))
+		if request.form["name"] and request.form["logo_url"]:
+			newGame = Game(name=request.form["name"], logo_url=request.form["logo_url"])
+			session.add(newGame)
+			flash("New Game %s Successfully Created" % newGame.name)
+			session.commit()
+			return redirect(url_for("showGames"))
 	else:
 		return render_template("newGame.html")
 
@@ -167,13 +168,14 @@ def newCharacter():
 	"""
 	# If the route was accessed with a POST method
 	if request.method == "POST":
-		game = session.query(Game).filter_by(name=request.form["game"]).one()
-		# Create a character from form values
-		newCharacter = Character(name=request.form["name"], game=game, photo_url=request.form["photo_url"])
-		session.add(newCharacter)
-		flash("New Character %s Successfully Created" % newCharacter.name)
-		session.commit()
-		return redirect(url_for("showCharacters", game_name=game.name))
+		if request.form["name"] and request.form["game"] and request.form["photo_url"]:
+			game = session.query(Game).filter_by(name=request.form["game"]).one()
+			# Create a character from form values
+			newCharacter = Character(name=request.form["name"], game=game, photo_url=request.form["photo_url"])
+			session.add(newCharacter)
+			flash("New Character %s Successfully Created" % newCharacter.name)
+			session.commit()
+			return redirect(url_for("showCharacters", game_name=game.name))
 	else:
 		games = session.query(Game).all()
 		return render_template("newCharacter.html", games=games)
@@ -208,10 +210,11 @@ def deleteGame(game_name):
 	gameToDelete = session.query(Game).filter_by(name=game_name).one()
 	# If the route was accessed with a POST method
 	if request.method == "POST":
-		session.delete(gameToDelete)
-		flash('%s Successfully Deleted' % gameToDelete.name)
-		session.commit()
-		return redirect(url_for("showGames"))
+		if gameToDelete:
+			session.delete(gameToDelete)
+			flash('%s Successfully Deleted' % gameToDelete.name)
+			session.commit()
+			return redirect(url_for("showGames"))
 	else:
 		return render_template("deleteGame.html", game=gameToDelete)
 
@@ -252,10 +255,11 @@ def deleteCharacter(character_name, game_name):
 	game = session.query(Game).filter_by(name=game_name).one()
 	# If the route was accessed with a POST method
 	if request.method == "POST":
-		session.delete(characterToDelete)
-		flash("%s Successfully Deleted" % characterToDelete.name)
-		session.commit()
-		return redirect(url_for("showCharacters", game_name=characterToDelete.game.name))
+		if characterToDelete:
+			session.delete(characterToDelete)
+			flash("%s Successfully Deleted" % characterToDelete.name)
+			session.commit()
+			return redirect(url_for("showCharacters", game_name=characterToDelete.game.name))
 	else:
 		return render_template("deleteCharacter.html", character=characterToDelete)
 
