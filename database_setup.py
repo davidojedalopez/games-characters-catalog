@@ -6,42 +6,45 @@ from flask.ext.login import LoginManager, UserMixin
 
 Base = declarative_base()
 
-class Game(Base):
-	__tablename__ = "game"
 
-	id = Column(Integer, Sequence("game_id_seq"), primary_key=True)
-	name = Column(String(50), nullable=False)	
-	logo_url = Column(String(250), nullable=False)
+class Game(Base):
+    __tablename__ = "game"
+
+    id = Column(Integer, Sequence("game_id_seq"), primary_key=True)
+    name = Column(String(50), nullable=False)
+    logo_url = Column(String(250), nullable=False)
+
 
 class Character(Base):
-	__tablename__ = "character"
+    __tablename__ = "character"
 
-	id = Column(Integer, Sequence("character_id_seq"), primary_key=True)
-	name = Column(String(30), nullable=False)
-	bio = Column(String(400))
-	photo_url = Column(String(250), nullable=False)
-	game_id = Column(Integer, ForeignKey("game.id"))
-	game = relationship(Game)
+    id = Column(Integer, Sequence("character_id_seq"), primary_key=True)
+    name = Column(String(30), nullable=False)
+    bio = Column(String(400))
+    photo_url = Column(String(250), nullable=False)
+    game_id = Column(Integer, ForeignKey("game.id"))
+    game = relationship(Game)
 
-	@property
-	def serialize(self):
-		"""Return object data in an easily serializable format"""
-		return {
-			"id" : self.id,
-			"name" : self.name,
-			"bio" : self.bio,
-			"photo_url" : self.photo_url,			
-			"game_name" : self.game.name
-		}
+    @property
+    def serialize(self):
+        """Return object data in an easily serializable format"""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "bio": self.bio,
+            "photo_url": self.photo_url,
+            "game_name": self.game.name
+        }
+
 
 class User(UserMixin, Base):
-	__tablename__ = "user"
+    __tablename__ = "user"
 
-	id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
-	# social_id: Unique identifier from the third party auth service
-	social_id = Column(String(50), nullable=False, unique=True)	
-	nickname = Column(String(50), nullable=False)
-	email = Column(String(50), nullable=False)	
+    id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
+    # social_id: Unique identifier from the third party auth service
+    social_id = Column(String(50), nullable=False, unique=True)
+    nickname = Column(String(50), nullable=False)
+    email = Column(String(50), nullable=False)
 
 engine = create_engine("sqlite:///game_characters_menu.db")
 

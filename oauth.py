@@ -1,21 +1,26 @@
-# Implementation based on OAuth Authentication with Flask tutorial 
-# from Miguel Grinberg (http://blog.miguelgrinberg.com/post/oauth-authentication-with-flask)
-
-import random, string
+import random
+import string
 from rauth import OAuth1Service, OAuth2Service
 from flask import current_app, url_for, request, redirect, session
 import json
 import urllib2
 
+# Implementation based on OAuth Authentication with Flask tutorial
+# from Miguel Grinberg
+# (http://blog.miguelgrinberg.com/post/oauth-authentication-with-flask)
+
+
 class OAuthSignIn(object):
     """
-    Base class under which the provider specific implementations will be written.
+    Base class under which the provider specific implementations will
+    be written.
     """
     providers = None
 
     def __init__(self, provider_name):
         """
-        Constructor to initialize provider's name, application ID and application secret.
+        Constructor to initialize provider's name, application ID and
+        application secret.
         """
         self.provider_name = provider_name
         credentials = current_app.config['OAUTH_CREDENTIALS'][provider_name]
@@ -41,14 +46,18 @@ class OAuthSignIn(object):
                 self.providers[provider.provider_name] = provider
         return self.providers[provider_name]
 
+
 class GoogleSignIn(OAuthSignIn):
     """
-    Sub-Class of OAuthSignIn for Google sign in.  
+    Sub-Class of OAuthSignIn for Google sign in.
     """
+
     def __init__(self):
         super(GoogleSignIn, self).__init__('google')
-        # Get the URL's for the OAuth2Service object for Rauth from Google well-known configuration page
-        googleinfo = urllib2.urlopen('https://accounts.google.com/.well-known/openid-configuration')
+        # Get the URL's for the OAuth2Service object for Rauth from Google
+        # well-known configuration page
+        googleinfo = urllib2.urlopen(
+            'https://accounts.google.com/.well-known/openid-configuration')
         google_params = json.load(googleinfo)
         # Create the service object using OAuth2Service
         self.service = OAuth2Service(
@@ -69,8 +78,8 @@ class GoogleSignIn(OAuthSignIn):
 
     def callback(self):
         """
-        Provider passes a verification token that the application can use to contact
-        the provider's API.
+        Provider passes a verification token that the application
+        can use to contact the provider's API.
 
         return: User data in tuple format
         """
@@ -78,7 +87,8 @@ class GoogleSignIn(OAuthSignIn):
         if 'code' not in request.args:
             return None, None, None
 
-        # Use the token to get the oauth_session object and request user information
+        # Use the token to get the oauth_session object and request user
+        # information
         oauth_session = self.service.get_auth_session(
             data={'code': request.args['code'],
                   'grant_type': 'authorization_code',
@@ -88,10 +98,10 @@ class GoogleSignIn(OAuthSignIn):
 
         me = oauth_session.get('').json()
 
-        # Preppend provider name to social ID random generated string 
-        social_id = 'google$' + "".join(random.choice(string.lowercase) for i in range(15))
+        # Preppend provider name to social ID random generated string
+        social_id = 'google$' + \
+            "".join(random.choice(string.lowercase) for i in range(15))
         username = me.get('email').split("@")[0]
         email = me.get('email')
 
         return social_id, username, email
-
