@@ -32,13 +32,12 @@
 						<i class="fa fa-check"></i> Save
 					</button>				
 
-				</div><!-- form-group -->
-			</form>
+					<a href = '{{url_for('showCharacters', game_name=character.game.name)}}' class="btn btn-default">
+						<i class="fa fa-close"></i> Cancel
+					</a>
 
-			<a href = '{{url_for('showCharacters', game_name=character.game.name)}}' class="btn btn-default">
-				<i class="fa fa-close"></i> Cancel
-			</a>
-					
+				</div><!-- form-group -->
+			</form>		
 		</div><!-- col-md-6 col-md-offset-1 padding-top -->
 	</div><!-- row -->
 {% endblock %}

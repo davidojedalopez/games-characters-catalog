@@ -13,12 +13,12 @@
 
 		<i class="fa fa-trash-o"></i> Delete</button>	
 
-	</form>
+		<a href = "{{url_for('showCharacters', game_name = character.game.name)}}">
+			<button class="btn btn-default">
+				<i class="fa fa-close"></i> Cancel
+			</button>
+		</a>	
 
-	<a href = "{{url_for('showCharacters', game_name = character.game.name)}}">
-		<button class="btn btn-default">
-			<i class="fa fa-close"></i> Cancel
-		</button>
-	</a>	
+	</form>
 
 {% endblock %}
