@@ -22,19 +22,8 @@ class Character(Base):
     name = Column(String(30), nullable=False)
     bio = Column(String(400))
     photo_url = Column(String(250), nullable=False)
-    game_id = Column(Integer, ForeignKey("game.id"))
+    game_id = Column(Integer, ForeignKey("game.id", ondelete="CASCADE"))
     game = relationship(Game)
-
-    @property
-    def serialize(self):
-        """Return object data in an easily serializable format"""
-        return {
-            "id": self.id,
-            "name": self.name,
-            "bio": self.bio,
-            "photo_url": self.photo_url,
-            "game_name": self.game.name
-        }
 
 
 class User(UserMixin, Base):
