@@ -19,7 +19,7 @@ csrf = SeaSurf(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_characters_menu.db'
 app.config['OAUTH_CREDENTIALS'] = {
     'google': {
-        'id': '''329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36
+        'id': '''329604591768-jeq2ugfhdfm6r6324arcckmdamdr5g36\
 .apps.googleusercontent.com''',
         'secret': 'tWckctJkAaUY4x-8Tedjc1c7'}}
 
