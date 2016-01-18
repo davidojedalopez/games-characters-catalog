@@ -19,7 +19,7 @@ Python/Flask web application with basic CRUD database operations. Also provides 
 | README.md 		| This file						 			 |
 
 ##  Installation
-------------
+
 The ideal way to run this application is using Vagrant. If you do not have Vagrant installed you can follow these instructions: [Vagrant][1].
 
 With Vagrant, from the cmd line:
@@ -37,11 +37,11 @@ Without Vagrant, from the cmd line:
  5. `python webserver.py` (Starts the webserver at `127.0.0.1:5000`)
 
 ##  Usage
-------------
+
 Current configuration lets you access the application through your local host at `127.0.0.1:5000` (Change the `Vagrantfile` if you need another port). From there you can start interacting with the web application.
 
 ## Comments
-------------
+
 This project is a small and simple web application that has the following features:
 
 - CRUD database operations
