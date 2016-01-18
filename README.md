@@ -1,4 +1,4 @@
-# Games Character Catalog :space_invader:
+# Games Characters Catalog :space_invader:
 
 ## About 
 
