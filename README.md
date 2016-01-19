@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/19de93ac601547ee96b824d17a06e5c8)](https://www.codacy.com/app/david-ojeda-lopez/games-characters-catalog)
+
 # Games Characters Catalog :space_invader:
 
 ## About 
